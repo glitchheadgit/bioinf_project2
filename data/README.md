@@ -1,4 +1,4 @@
-Following files are generated with command:
+Control files are generated with command:
 ```bash
 cat controlN.vcf| grep -v '^##'| awk '{print $1, $2, $4, $5, "FREQ:", $10}'|awk -F: '{print $1, $8}' | sort -k6 > controlN.tsv
 ```
