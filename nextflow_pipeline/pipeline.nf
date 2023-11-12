@@ -50,7 +50,7 @@ process mpileup {
 	path reference
 	path bam
 	output:
-	path "*", emit: pileup
+	path "*.mpileup", emit: pileup
 	script:
 	"""
 	samtools mpileup -d $params.coverage_threshold -f $reference $bam > vc.mpileup
@@ -80,7 +80,7 @@ process digest_vcf {
 	path "*"
 	script:
 	"""
-	cat $vcf | grep -v '^##'| awk '{print \$1, \$2, \$4, \$5, "FREQ:", \$10}'|awk -F: '{print \$1, \$8}' | sort -k6 > digest.tsv
+	cat $vcf | grep -v '^##'| awk '{print \$1, \$2, \$4, \$5, "misc:", \$10}' | awk -F : '{print \$1, \$8}' | awk '{ \$5 =""; print}' | sed -e '1s/.*/#CHROM POS REF ALT FREQ/' | sort -k5 > digest.tsv
 	"""
 }
 
